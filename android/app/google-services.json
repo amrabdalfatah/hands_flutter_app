@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1077230982743",
+    "project_id": "handsinwordssystem",
+    "storage_bucket": "handsinwordssystem.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077230982743:android:a595b38c3f9ffd9ceb3512",
+        "android_client_info": {
+          "package_name": "com.example.second_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaSEcJzdRjRU71Mi8e2_ikVv-EFQQIL3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

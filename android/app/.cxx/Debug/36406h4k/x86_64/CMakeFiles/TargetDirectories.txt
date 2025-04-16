@@ -1,0 +1,2 @@
+/Users/dalalotb/Downloads/hands_test-main/android/app/.cxx/Debug/36406h4k/x86_64/CMakeFiles/edit_cache.dir
+/Users/dalalotb/Downloads/hands_test-main/android/app/.cxx/Debug/36406h4k/x86_64/CMakeFiles/rebuild_cache.dir

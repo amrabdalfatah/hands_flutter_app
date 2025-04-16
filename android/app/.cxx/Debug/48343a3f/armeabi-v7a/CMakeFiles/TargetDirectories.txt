@@ -1,0 +1,2 @@
+/Users/amr/Downloads/hands_tset/android/app/.cxx/Debug/48343a3f/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/amr/Downloads/hands_tset/android/app/.cxx/Debug/48343a3f/armeabi-v7a/CMakeFiles/rebuild_cache.dir
