@@ -71,10 +71,10 @@ class HomeView extends GetWidget<StudentViewModel> {
               crossAxisCount: 2, // Two cards per row
               mainAxisSpacing: 16,
               crossAxisSpacing: 16,
-              childAspectRatio: 1.1,
+              childAspectRatio: 1.2,
               children: [
                 GradientCard(
-                  title: "Sign Language to Audio",
+                  title: "Sign Language \nto Audio",
                   icon: Icons.front_hand,
                   startColor: Colors.teal,
                   endColor: Colors.green,
@@ -83,21 +83,21 @@ class HomeView extends GetWidget<StudentViewModel> {
                   },
                 ),
                 GradientCard(
-                  title: "Saved Lectures",
+                  title: "Saved \nLectures",
                   icon: Icons.save,
                   startColor: const Color.fromARGB(255, 242, 154, 23),
                   endColor: const Color.fromARGB(255, 249, 182, 25),
                   onTap: () => Get.to(() => const SavedLecturesScreen()),
                 ),
                 GradientCard(
-                  title: "Audio to Text",
+                  title: "Audio to \nText",
                   icon: Icons.mic,
                   startColor: const Color.fromARGB(255, 93, 68, 255),
                   endColor: Colors.blue,
                   onTap: () => Get.to(() => const AudioToTextScreen()),
                 ),
                 GradientCard(
-                  title: "Emergency Session",
+                  title: "Emergency \nSession",
                   icon: Icons.warning,
                   startColor: Colors.redAccent,
                   endColor: Colors.deepOrangeAccent,
@@ -151,7 +151,6 @@ class GradientCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // 🔹 Semi-transparent circles, placed precisely at the top-right corner
             Positioned(
               top: -40,
               right: -10,
@@ -162,22 +161,24 @@ class GradientCard extends StatelessWidget {
               left: 120,
               child: _buildGrayCircle(95), // Smaller overlapping circle
             ),
-
-            // 🔹 Card Content (Centered)
             Padding(
               padding: const EdgeInsets.all(18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(icon, color: Colors.white, size: 38),
-                  const SizedBox(height: 20),
+                  Icon(
+                    icon,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  const SizedBox(height: 10),
                   Text(
                     title,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
-                      //fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
