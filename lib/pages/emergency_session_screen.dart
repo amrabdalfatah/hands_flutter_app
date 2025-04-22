@@ -2,7 +2,6 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-
 const String appId = "550ce048c6c6478a9cce2a051fb15826";
 const String channelName = "testChannel";
 
@@ -23,6 +22,7 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
     super.initState();
     initAgora();
   }
+
   Future<void> initAgora() async {
     await [Permission.camera, Permission.microphone].request();
 
@@ -50,14 +50,11 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
           remoteId = null;
         });
       },
-      onTokenPrivilegeWillExpire: (con, tok) {
-
-      },
+      onTokenPrivilegeWillExpire: (con, tok) {},
     ));
-   // await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    // await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await _engine.enableVideo();
     await _engine.startPreview();
-
 
     await _engine.joinChannel(
       token: "anytoken",
@@ -80,11 +77,11 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Emergency Session"),
-        backgroundColor:  Colors.white, // this is a basic comment
+        backgroundColor: Colors.white, // this is a basic comment
       ),
       body: Stack(
         children: [
-           AgoraVideoView(
+          AgoraVideoView(
             controller: VideoViewController(
               rtcEngine: _engine,
               canvas: const VideoCanvas(uid: 0),

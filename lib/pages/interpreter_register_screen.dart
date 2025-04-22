@@ -1,8 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hands_test/model/interpreter.dart';
+
+import '../core/utils/constants.dart';
+import '../core/utils/utils.dart';
 
 class InterpreterRegisterScreen extends StatefulWidget {
   const InterpreterRegisterScreen({super.key});
@@ -63,6 +66,10 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
           password: _passwordController.text.trim(),
         );
 
+        AppConstants.userId = user.user!.uid;
+        AppConstants.userName = _fullNameController.text;
+        AppConstants.person = Person.student;
+
         final interpreter = Interpreter(
           id: user.user!.uid,
           fullName: _fullNameController.text.trim(),
@@ -114,14 +121,14 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const  Color(0xFFDBE8E6),
+      backgroundColor: const Color(0xFFDBE8E6),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 height: 200,
-                color:const Color(0xFFDBE8E6),
+                color: const Color(0xFFDBE8E6),
                 child: Image.asset('assets/images/handsinwords_logo.png',
                     height: 300),
               ),
@@ -187,7 +194,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
                     padding: const EdgeInsets.only(left: 20.0),
                     child: TextField(
                       controller: _emailController,
-                      decoration:const InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Enter email address",
                       ),
@@ -209,7 +216,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
                     child: TextField(
                       controller: _passwordController,
                       obscureText: true,
-                      decoration:const InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Enter Password",
                       ),
@@ -231,7 +238,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
                     child: TextField(
                       controller: _confirmpasswordController,
                       obscureText: true,
-                      decoration:const InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Confirm Password",
                       ),
@@ -242,35 +249,36 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
               const SizedBox(height: 40),
               process
                   ? const Center(
-                child: CircularProgressIndicator(),
-              )
+                      child: CircularProgressIndicator(),
+                    )
                   : Padding(
-                padding:const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Container(
-                  //height: 40,
-                    width: 310,
-                    padding:const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(35),
-                      color:const Color(0xFF45CECE),
-                      border: Border.all(color: Colors.white),
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Container(
+                          //height: 40,
+                          width: 310,
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(35),
+                            color: const Color(0xFF45CECE),
+                            border: Border.all(color: Colors.white),
+                          ),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () async {
+                                await signUp();
+                                Navigator.pushReplacementNamed(
+                                    context, '/HomeScreen');
+                              },
+                              child: const Text(
+                                'Register',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )),
                     ),
-                    child: Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          await signUp();
-                          Navigator.pushReplacementNamed(context, '/HomeScreen');
-                        },
-                        child:const Text(
-                          'Register',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    )),
-              ),
               const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 const Text('Already have an account ? ',
@@ -282,7 +290,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
                   onTap: () {
                     Navigator.pushNamed(context, '/LoginScreen');
                   },
-                  child:const Text('Sign In',
+                  child: const Text('Sign In',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         color: Color.fromARGB(255, 57, 171, 171),

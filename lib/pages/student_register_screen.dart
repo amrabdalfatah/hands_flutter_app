@@ -1,9 +1,14 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hands_test/core/utils/constants.dart';
+import 'package:hands_test/core/utils/utils.dart';
+import 'package:hands_test/pages/home_screen.dart';
+
 import '../model/student.dart';
 
 class StudentRegisterScreen extends StatefulWidget {
@@ -67,7 +72,9 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
-
+        AppConstants.userId = user.user!.uid;
+        AppConstants.userName = _fullNameController.text;
+        AppConstants.person = Person.student;
         final student = Student(
           id: user.user!.uid,
           fullName: _fullNameController.text,
@@ -85,6 +92,10 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
           process = false;
         });
 
+        final box = GetStorage();
+        box.write('userid', user.user!.uid);
+        box.write('person', Person.student.index);
+
         Get.snackbar(
           "Success",
           "Register Student Success",
@@ -93,7 +104,7 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
         );
 
         // ✅ Navigate to HomeScreen only after successful registration
-        Navigator.pushNamed(context, '/HomeScreen');
+        Get.offAll(() => const HomeScreen());
       } else {
         setState(() {
           process = false;
@@ -132,8 +143,10 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
               Container(
                 height: 200,
                 color: const Color(0xFFDBE8E6),
-                child: Image.asset('assets/images/handsinwords_logo.png',
-                    height: 300),
+                child: Image.asset(
+                  'assets/images/handsinwords_logo.png',
+                  height: 300,
+                ),
               ),
               Container(
                 height: 50,
@@ -166,22 +179,39 @@ class _StudentRegisterScreenState extends State<StudentRegisterScreen> {
               const SizedBox(height: 6),
               // Input Fields
               buildTextField(
-                  "Enter your full name", false, _fullNameController),
-              const SizedBox(height: 15),
-              buildTextField("Enter email address", false, _emailController),
-              const SizedBox(height: 15),
-              buildTextField("Enter Password", true, _passwordController),
-              const SizedBox(height: 15),
-              buildTextField(
-                  "Confirm Password", true, _confirmpasswordController),
+                "Enter your full name",
+                false,
+                _fullNameController,
+              ),
               const SizedBox(height: 15),
               buildTextField(
-                  "Enter your University", false, _universityController),
+                "Enter email address",
+                false,
+                _emailController,
+              ),
+              const SizedBox(height: 15),
+              buildTextField(
+                "Enter Password",
+                true,
+                _passwordController,
+              ),
+              const SizedBox(height: 15),
+              buildTextField(
+                "Confirm Password",
+                true,
+                _confirmpasswordController,
+              ),
+              const SizedBox(height: 15),
+              buildTextField(
+                "Enter your University",
+                false,
+                _universityController,
+              ),
               const SizedBox(height: 18),
 
               // ✅ Fixed Register Button with signUp function
               process
-                  ? Center(
+                  ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : Padding(

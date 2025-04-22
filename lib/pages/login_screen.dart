@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hands_test/core/view_model/auth_viewmodel.dart';
-import 'package:hands_test/pages/splash_screen.dart';
+import 'package:hands_test/pages/register_screen.dart';
 import 'package:hands_test/widgets/input_field.dart';
 import 'package:hands_test/widgets/main_button.dart';
 
@@ -103,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Get.offAll(() => SplashScreen());
+                      Get.to(() => const RegisterScreen());
                     },
                     child: const Text(
                       'Sign up',

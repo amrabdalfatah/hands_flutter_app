@@ -1,30 +1,36 @@
-import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hands_test/app.dart';
 import 'package:hands_test/core/services/firestore/firestore_student.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/model/student.dart';
-import 'package:hands_test/pages/home_screen.dart';
+import 'package:hands_test/pages/home_view.dart';
+import 'package:hands_test/pages/student_settings.dart';
+import 'package:hands_test/pages/user_profile.dart';
 import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
-import 'package:hands_test/app.dart';
 
 class StudentViewModel extends GetxController {
   Student? studentData;
 
   List<Widget> screens = const [
-    HomeScreen(),
+    HomeView(),
+    UserProfile(),
+    StudentSettings(),
   ];
+
   List<String> appBars = const [
     'Home',
+    'Profile',
+    'Settings',
   ];
+
   RxBool action = false.obs;
   RxBool loaded = true.obs;
   ValueNotifier<int> screenIndex = ValueNotifier(0);
@@ -38,6 +44,9 @@ class StudentViewModel extends GetxController {
   void onInit() async {
     super.onInit();
     getStudent();
+  }
+
+  signLanguage() async {
     await _initCamera();
     await _loadModel();
   }
@@ -51,7 +60,9 @@ class StudentViewModel extends GetxController {
 
   Future<void> getStudent() async {
     loaded.value = false;
-    await FirestoreStudent().getCurrentStudent(AppConstants.userId!).then((value) {
+    await FirestoreStudent()
+        .getCurrentStudent(AppConstants.userId!)
+        .then((value) {
       studentData = Student.fromJson(value.data() as Map<String, dynamic>?);
     });
     loaded.value = true;
@@ -89,15 +100,18 @@ class StudentViewModel extends GetxController {
       await cameraController!.startImageStream((CameraImage image) async {
         await runModelOnFrame(image);
       });
-
     } catch (e) {
       print('Failed to load model: $e');
     }
   }
-    // Preprocess the image (resize, normalize, etc.)
+
+  // Preprocess the image (resize, normalize, etc.)
   List<double> preprocessImage(img.Image image) {
-    img.Image resized = img.copyResize(image,
-        width: 224, height: 224,); // Resize based on model input
+    img.Image resized = img.copyResize(
+      image,
+      width: 224,
+      height: 224,
+    ); // Resize based on model input
     List<double> input = [];
 
     for (var y = 0; y < resized.height; y++) {
@@ -133,16 +147,18 @@ class StudentViewModel extends GetxController {
 
     return output[0][0].toString(); // Adjust based on model output
   }
+
   // new runModel
   Future<void> runModelOnFrame(CameraImage image) async {
     if (!cameraController!.value.isStreamingImages) return;
-    img.Image imageNew = convertCameraImage(image, targetWidth: 224, targetHeight: 224);
+    img.Image imageNew =
+        convertCameraImage(image, targetWidth: 224, targetHeight: 224);
     final result = runInference(imageNew);
-
   }
 
   // Convert
-  img.Image convertCameraImage(CameraImage image, {int targetWidth = 224, int targetHeight = 224}) {
+  img.Image convertCameraImage(CameraImage image,
+      {int targetWidth = 224, int targetHeight = 224}) {
     final int width = image.width;
     final int height = image.height;
     final img.Image imageRGB = img.Image(width: width, height: height);
@@ -157,25 +173,26 @@ class StudentViewModel extends GetxController {
       for (int col = 0; col < width; col++) {
         final int yIndex = row * width + col;
 
-        final int uvIndex = (row ~/ 2) * uvRowStride + (col ~/ 2) * uvPixelStride;
+        final int uvIndex =
+            (row ~/ 2) * uvRowStride + (col ~/ 2) * uvPixelStride;
         final int yVal = y[yIndex];
         final int uVal = u[uvIndex];
         final int vVal = v[uvIndex];
 
         final double r = yVal + 1.402 * (vVal - 128);
-        final double g = yVal - 0.344136 * (uVal - 128) - 0.714136 * (vVal - 128);
+        final double g =
+            yVal - 0.344136 * (uVal - 128) - 0.714136 * (vVal - 128);
         final double b = yVal + 1.772 * (uVal - 128);
-        imageRGB.setPixelRgb(col, row, r.clamp(0, 255).toInt(), g.clamp(0, 255).toInt(), b.clamp(0, 255).toInt());
+        imageRGB.setPixelRgb(col, row, r.clamp(0, 255).toInt(),
+            g.clamp(0, 255).toInt(), b.clamp(0, 255).toInt());
       }
     }
 
     // Resize for model input
-    final img.Image resized = img.copyResize(imageRGB, width: targetWidth, height: targetHeight);
+    final img.Image resized =
+        img.copyResize(imageRGB, width: targetWidth, height: targetHeight);
     return resized;
-
   }
-
-
 
   // Map the model output to readable text
   String _getLabel(int index) {

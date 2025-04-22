@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../pages/login_screen.dart';
-import '../pages/splash_screen.dart';
+import '../pages/register_screen.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -25,7 +25,7 @@ class _AuthPageState extends State<AuthPage> {
     if (showLoginPage) {
       return LoginScreen();
     } else {
-      return SplashScreen(showLoginPage: toggleScreens);
+      return RegisterScreen();
     }
   }
 }
