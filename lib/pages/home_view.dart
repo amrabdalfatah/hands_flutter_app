@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hands_test/core/view_model/student_viewmodel.dart';
 import 'package:hands_test/pages/audio_to_text_screen.dart';
 import 'package:hands_test/pages/emergency_session_screen.dart';
-import 'package:hands_test/pages/saved_lectures_screen.dart';
+import 'package:hands_test/pages/audio_to_sign_screen.dart';
 import 'package:hands_test/pages/sign_to_audio_screen.dart';
 
 class HomeView extends GetWidget<StudentViewModel> {
@@ -83,11 +83,11 @@ class HomeView extends GetWidget<StudentViewModel> {
                   },
                 ),
                 GradientCard(
-                  title: "Saved \nLectures",
+                  title: "Audio to \nSign",
                   icon: Icons.save,
                   startColor: const Color.fromARGB(255, 242, 154, 23),
                   endColor: const Color.fromARGB(255, 249, 182, 25),
-                  onTap: () => Get.to(() => const SavedLecturesScreen()),
+                  onTap: () => Get.to(() => const AudioToSignScreen()),
                 ),
                 GradientCard(
                   title: "Audio to \nText",

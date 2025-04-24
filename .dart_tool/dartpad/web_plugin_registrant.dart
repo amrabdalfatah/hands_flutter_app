@@ -15,6 +15,7 @@ import 'package:flutter_tts/flutter_tts_web.dart';
 import 'package:iris_method_channel/iris_method_channel_web.dart';
 import 'package:permission_handler_html/permission_handler_html.dart';
 import 'package:speech_to_text/speech_to_text_web.dart';
+import 'package:video_player_web/video_player_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void registerPlugins([final Registrar? pluginRegistrar]) {
@@ -28,5 +29,6 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   IrisMethodChannelWeb.registerWith(registrar);
   WebPermissionHandler.registerWith(registrar);
   SpeechToTextPlugin.registerWith(registrar);
+  VideoPlayerPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
 }
