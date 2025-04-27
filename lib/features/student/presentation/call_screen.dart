@@ -29,7 +29,11 @@ class _CallScreenState extends State<CallScreen> {
 
     _engine.registerEventHandler(RtcEngineEventHandler(
       onJoinChannelSuccess: (conn, elapsed) {
-        print("Joined channel: conn.channelId");
+        print("/////////////////////////////");
+        print("/////////////////////////////");
+        print("/////////////////////////////");
+        print("/////////////////////////////");
+        print("Joined channel: ${conn.channelId}");
         setState(() {
           localUserJoined = true;
         });
@@ -40,6 +44,7 @@ class _CallScreenState extends State<CallScreen> {
         print("/////////////////////////////");
         print("/////////////////////////////");
         print("Remote user joined:$remoteUid");
+        print(conn);
         setState(() {
           remoteId = remoteUid;
         });
