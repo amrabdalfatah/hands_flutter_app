@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hands_test/core/view_model/student_viewmodel.dart';
-import 'package:hands_test/pages/audio_to_text_screen.dart';
-import 'package:hands_test/pages/emergency_session_screen.dart';
-import 'package:hands_test/pages/audio_to_sign_screen.dart';
-import 'package:hands_test/pages/sign_to_audio_screen.dart';
+import 'package:hands_test/features/student/controller/student_viewmodel.dart';
+import 'audio_to_text_screen.dart';
+import 'emergency_session_screen.dart';
+import 'audio_to_sign_screen.dart';
+import 'sign_to_audio_screen.dart';
 
 class HomeView extends GetWidget<StudentViewModel> {
   const HomeView({super.key});
@@ -131,7 +131,7 @@ class GradientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(

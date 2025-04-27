@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hands_test/model/interpreter.dart';
 
-import '../core/utils/constants.dart';
-import '../core/utils/utils.dart';
+import '../../../core/utils/constants.dart';
+import '../../../core/utils/utils.dart';
 
 class InterpreterRegisterScreen extends StatefulWidget {
   const InterpreterRegisterScreen({super.key});

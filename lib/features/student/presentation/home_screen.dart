@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hands_test/core/view_model/student_viewmodel.dart';
+import 'package:hands_test/features/student/controller/student_viewmodel.dart';
 
-import '../pages/Home_screen_drawer.dart';
+import 'Home_screen_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 // import 'package:flutter_mediapipe/gen/landmark.pb.dart' as media;
 
-import '../core/view_model/student_viewmodel.dart';
+import '../controller/student_viewmodel.dart';
 
 class SignToAudioScreen extends GetWidget<StudentViewModel> {
   const SignToAudioScreen({super.key});

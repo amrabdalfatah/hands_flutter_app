@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
@@ -12,6 +14,7 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
   late stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = "";
+  List<String> allTexts = [];
   String _image = "assets/videos/intro.gif";
 
   @override
@@ -31,62 +34,35 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
       onStatus: (status) => print("Status: $status"),
       onError: (error) => print("Error: $error"),
     );
+    allTexts = [];
 
     if (available) {
-      _speech.listen(
-        localeId: "ar_SA", // Specify the locale for Arabic
+      await _speech.listen(
+        localeId: "ar_SA",
         onResult: (result) {
-          setState(() {
-            _text = result.recognizedWords;
-            switch (_text) {
-              case "السلام":
-                _image = "assets/videos/salam.gif";
-                break;
-              case "اشرح":
-                _image = "assets/videos/explain.gif";
-                break;
-              case "الكويت":
-                _image = "assets/videos/kwd.gif";
-                break;
-              case "اليوم":
-                _image = "assets/videos/day.gif";
-                break;
-              case "تاريخ":
-                _image = "assets/videos/date.gif";
-                break;
-              case "ماده":
-                _image = "assets/videos/material.gif";
-                break;
-              case "موضوع":
-                _image = "assets/videos/subject.gif";
-                break;
-              case "واضح":
-                _image = "assets/videos/clear.gif";
-                break;
-              default:
-                _image = "assets/videos/intro.gif";
-            }
-          });
+          _text = result.recognizedWords;
+          allTexts = _text.split(" ").toList();
+          _stopListening();
         },
       );
-      setState(() => _isListening = false);
     } else {
-      _stopListening();
+      setState(() => _isListening = false);
     }
   }
 
-  void _stopListening() {
-    _speech.stop();
+  void _stopListening() async {
+    await _speech.stop();
     setState(() => _isListening = false);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Audio to Sign Converter'),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Row(
@@ -103,21 +79,37 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
           SizedBox(
-            height: 600,
-            child: Image.asset(
-              _image,
-              fit: BoxFit.fitHeight,
-            ),
+            height: double.infinity,
+            child: allTexts.isEmpty
+                ? Image.asset(
+                    "assets/videos/intro.gif",
+                    fit: BoxFit.fitHeight,
+                  )
+                : FutureBuilder(
+                    future: Future.delayed(const Duration(milliseconds: 500)),
+                    builder: (context, _) {
+                      return Image.asset(
+                        "assets/videos/clear.gif",
+                        fit: BoxFit.fitHeight,
+                      );
+                    },
+                  ),
           ),
           const SizedBox(height: 10),
-          Text(
-            _text,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          Positioned(
+            top: 40,
+            left: 40,
+            right: 40,
+            child: Text(
+              _text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

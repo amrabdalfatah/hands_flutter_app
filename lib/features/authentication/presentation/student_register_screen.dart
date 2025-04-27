@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/core/utils/utils.dart';
-import 'package:hands_test/pages/home_screen.dart';
+import 'package:hands_test/features/student/presentation/home_screen.dart';
 
-import '../model/student.dart';
+import '../../../model/student.dart';
 
 class StudentRegisterScreen extends StatefulWidget {
   const StudentRegisterScreen({super.key});

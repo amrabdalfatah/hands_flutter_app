@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hands_test/core/view_model/auth_viewmodel.dart';
-import 'package:hands_test/pages/register_screen.dart';
+import 'package:hands_test/features/authentication/controller/auth_viewmodel.dart';
 import 'package:hands_test/widgets/input_field.dart';
 import 'package:hands_test/widgets/main_button.dart';
+
+import 'register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});

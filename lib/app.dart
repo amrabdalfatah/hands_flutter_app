@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/core/utils/utils.dart';
-import 'package:hands_test/pages/home_screen.dart';
-import 'package:hands_test/pages/interpreter_home.dart';
-import 'package:hands_test/pages/login_screen.dart';
 
 import 'core/helper/binding.dart';
+import 'features/authentication/presentation/login_screen.dart';
+import 'features/interpreter/presentation/interpreter_home.dart';
+import 'features/student/presentation/home_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hands_test/pages/interpreter_register_screen.dart';
-import 'package:hands_test/pages/student_register_screen.dart';
+import 'interpreter_register_screen.dart';
+import 'student_register_screen.dart';
 
-import '../widgets/selection_button.dart';
+import '../../../widgets/selection_button.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});

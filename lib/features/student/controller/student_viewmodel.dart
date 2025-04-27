@@ -10,11 +10,12 @@ import 'package:hands_test/app.dart';
 import 'package:hands_test/core/services/firestore/firestore_student.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/model/student.dart';
-import 'package:hands_test/pages/home_view.dart';
-import 'package:hands_test/pages/student_settings.dart';
-import 'package:hands_test/pages/user_profile.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
+
+import '../presentation/home_view.dart';
+import '../presentation/student_settings.dart';
+import '../presentation/user_profile.dart';
 
 class StudentViewModel extends GetxController {
   Student? studentData;
@@ -157,8 +158,11 @@ class StudentViewModel extends GetxController {
   }
 
   // Convert
-  img.Image convertCameraImage(CameraImage image,
-      {int targetWidth = 224, int targetHeight = 224}) {
+  img.Image convertCameraImage(
+    CameraImage image, {
+    int targetWidth = 224,
+    int targetHeight = 224,
+  }) {
     final int width = image.width;
     final int height = image.height;
     final img.Image imageRGB = img.Image(width: width, height: height);

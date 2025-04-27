@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../core/view_model/student_viewmodel.dart';
+import '../controller/student_viewmodel.dart';
 
 class UserProfile extends GetWidget<StudentViewModel> {
   const UserProfile({super.key});
