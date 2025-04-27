@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hands_test/app.dart';
-import 'package:hands_test/core/services/agora_service.dart';
 import 'package:hands_test/core/services/firestore/firestore_student.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/model/interpreter.dart';
@@ -48,7 +47,6 @@ class StudentViewModel extends GetxController {
   void onInit() async {
     super.onInit();
     getStudent();
-    await initAgora();
   }
 
   signLanguage() async {
@@ -77,7 +75,7 @@ class StudentViewModel extends GetxController {
 
   Future<void> getStudent() async {
     loaded.value = false;
-    await setActiveStatus(true);
+    // await setActiveStatus(true);
     await FirestoreStudent()
         .getCurrentStudent(AppConstants.userId!)
         .then((value) {

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hands_test/features/student/controller/student_viewmodel.dart';
+import 'package:hands_test/model/interpreter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'call_screen.dart';
@@ -28,53 +29,7 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
     // initAgora();
   }
 
-  Future<void> initAgora() async {
-    await [Permission.camera, Permission.microphone].request();
-
-    _engine = createAgoraRtcEngine();
-    await _engine.initialize(const RtcEngineContext(appId: appId));
-
-    // await _engine!.enableVideo();
-    // await _engine!.startPreview();
-
-    _engine.registerEventHandler(RtcEngineEventHandler(
-      onJoinChannelSuccess: (conn, elapsed) {
-        print("Joined channel: conn.channelId");
-        setState(() {
-          localUserJoined = true;
-        });
-      },
-      onUserJoined: (conn, remoteUid, elapsed) {
-        print("Remote user joined:remoteUid");
-        setState(() {
-          remoteId = remoteUid;
-        });
-      },
-      onUserOffline: (conn, remote, rea) {
-        setState(() {
-          remoteId = null;
-        });
-      },
-      onTokenPrivilegeWillExpire: (con, tok) {},
-    ));
-    // await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await _engine.enableVideo();
-    await _engine.startPreview();
-
-    await _engine.joinChannel(
-      token: "anytoken",
-      channelId: channelName,
-      uid: 0,
-      options: ChannelMediaOptions(),
-    );
-  }
-
-  @override
-  void dispose() async {
-    await _engine.leaveChannel();
-    await _engine.release();
-    super.dispose();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -103,28 +58,25 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
               : ListView.builder(
                   itemCount: interpreters.length,
                   itemBuilder: (context, index) {
-                    var user = interpreters[index];
-                    return ListTile(
-                      title: Text(user['name']),
-                      subtitle: Text(user['uid']),
-                      onTap: () {
-                        Get.to(() => const CallScreen());
-                      },
+                    var user = Interpreter.fromJson(interpreters[index].data());
+                    return Card(
+                      child: ListTile(
+                        title: Text(user.fullName!),
+                        subtitle: Text(user.id!),
+                        trailing: Icon(
+                          Icons.online_prediction,
+                          color: Colors.green,
+                        ),
+                        onTap: () {
+                          Get.to(() => const CallScreen());
+                        },
+                      ),
                     );
                   },
                 );
         },
       ),
-      // body: Stack(
-      //   children: [
-      //     AgoraVideoView(
-      //       controller: VideoViewController(
-      //         rtcEngine: _engine,
-      //         canvas: const VideoCanvas(uid: 0),
-      //       ),
-      //     ),
-      //   ],
-      // ),
+      
     );
   }
 }
