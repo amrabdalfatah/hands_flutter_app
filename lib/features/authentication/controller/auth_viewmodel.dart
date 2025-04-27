@@ -6,7 +6,7 @@ import 'package:hands_test/core/services/firestore/firestore_interpreter.dart';
 import 'package:hands_test/core/services/firestore/firestore_student.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/core/utils/utils.dart';
-import 'package:hands_test/features/interpreter/presentation/interpreter_home.dart';
+import 'package:hands_test/features/interpreter/presentation/interpreter_home_view.dart';
 import 'package:hands_test/features/student/presentation/home_screen.dart';
 import 'package:hands_test/model/interpreter.dart';
 import 'package:hands_test/model/student.dart';

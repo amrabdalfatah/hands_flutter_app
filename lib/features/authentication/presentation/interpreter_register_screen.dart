@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hands_test/features/interpreter/presentation/interpreter_home_view.dart';
 import 'package:hands_test/model/interpreter.dart';
 
 import '../../../core/utils/constants.dart';
@@ -10,7 +11,8 @@ import '../../../core/utils/utils.dart';
 class InterpreterRegisterScreen extends StatefulWidget {
   const InterpreterRegisterScreen({super.key});
   @override
-  _InterpreterRegisterScreen createState() => _InterpreterRegisterScreen();
+  State<InterpreterRegisterScreen> createState() =>
+      _InterpreterRegisterScreen();
 }
 
 class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
@@ -266,8 +268,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
                             child: GestureDetector(
                               onTap: () async {
                                 await signUp();
-                                Navigator.pushReplacementNamed(
-                                    context, '/HomeScreen');
+                                Get.to(() => const InterpreterHomeView());
                               },
                               child: const Text(
                                 'Register',

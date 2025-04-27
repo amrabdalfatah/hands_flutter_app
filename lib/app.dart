@@ -6,7 +6,7 @@ import 'package:hands_test/core/utils/utils.dart';
 
 import 'core/helper/binding.dart';
 import 'features/authentication/presentation/login_screen.dart';
-import 'features/interpreter/presentation/interpreter_home.dart';
+import 'features/interpreter/presentation/interpreter_home_view.dart';
 import 'features/student/presentation/home_screen.dart';
 
 class MyApp extends StatelessWidget {

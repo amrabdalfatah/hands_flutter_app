@@ -15,7 +15,9 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
   bool _isListening = false;
   String _text = "";
   List<String> allTexts = [];
-  String _image = "assets/videos/intro.gif";
+  int currentWordIndex = 0;
+  String _currentImage = "assets/videos/intro.gif";
+  Timer? _timer;
 
   @override
   void initState() {
@@ -25,34 +27,87 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
 
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 
   void _startListening() async {
     setState(() => _isListening = true);
-    bool available = await _speech.initialize(
+    await _speech.initialize(
       onStatus: (status) => print("Status: $status"),
       onError: (error) => print("Error: $error"),
     );
-    allTexts = [];
 
-    if (available) {
-      await _speech.listen(
-        localeId: "ar_SA",
-        onResult: (result) {
-          _text = result.recognizedWords;
-          allTexts = _text.split(" ").toList();
-          _stopListening();
-        },
-      );
-    } else {
-      setState(() => _isListening = false);
-    }
+    allTexts.clear();
+    await _speech.listen(
+      localeId: "ar_SA",
+      onResult: (result) {
+        _text = result.recognizedWords;
+        allTexts = _text.split(" ");
+        if (allTexts.isNotEmpty) {
+          _startShowingWords();
+        }
+      },
+    );
   }
 
   void _stopListening() async {
     await _speech.stop();
     setState(() => _isListening = false);
+  }
+
+  void _startShowingWords() {
+    currentWordIndex = 0;
+    _timer?.cancel(); // Cancel any previous timer
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (currentWordIndex < allTexts.length) {
+        setState(() {
+          // Here you can map the word to corresponding image if needed
+          switch (allTexts[currentWordIndex]) {
+            case 'السلام':
+              _currentImage = "assets/videos/salam.gif";
+              break;
+            case 'عليكم':
+              _currentImage = "assets/videos/alikom.gif";
+              break;
+            case 'واضح':
+              _currentImage = "assets/videos/clear.gif";
+              break;
+            case 'اشرح':
+              _currentImage = "assets/videos/explain.gif";
+              break;
+            case 'الكويت':
+              _currentImage = "assets/videos/kwd.gif";
+              break;
+            case 'اليوم':
+              _currentImage = "assets/videos/day.gif";
+              break;
+            case 'تاريخ':
+              _currentImage = "assets/videos/date.gif";
+              break;
+            case 'ماده':
+              _currentImage = "assets/videos/material.gif";
+              break;
+            case 'موضوع':
+              _currentImage = "assets/videos/subject.gif";
+              break;
+            default:
+              _currentImage = "assets/videos/intro.gif";
+              break;
+          }
+        });
+        currentWordIndex++;
+      } else {
+        timer.cancel();
+        setState(() {
+          _currentImage = "assets/videos/intro.gif"; // After finishing words
+        });
+      }
+    });
+    setState(() {
+      _isListening = false;
+    });
   }
 
   @override
@@ -83,20 +138,10 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
         children: [
           SizedBox(
             height: double.infinity,
-            child: allTexts.isEmpty
-                ? Image.asset(
-                    "assets/videos/intro.gif",
-                    fit: BoxFit.fitHeight,
-                  )
-                : FutureBuilder(
-                    future: Future.delayed(const Duration(milliseconds: 500)),
-                    builder: (context, _) {
-                      return Image.asset(
-                        "assets/videos/clear.gif",
-                        fit: BoxFit.fitHeight,
-                      );
-                    },
-                  ),
+            child: Image.asset(
+              _currentImage,
+              fit: BoxFit.fitHeight,
+            ),
           ),
           const SizedBox(height: 10),
           Positioned(
