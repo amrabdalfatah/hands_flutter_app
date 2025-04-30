@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hands_test/features/interpreter/controller/interpreter_viewmodel.dart';
-import 'package:hands_test/features/interpreter/presentation/interpreter_call_screen.dart';
+import 'package:hands_test/features/student/presentation/call_screen.dart';
 
 class InterpreterScreen extends GetWidget<InterpreterViewModel> {
   const InterpreterScreen({super.key});

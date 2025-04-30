@@ -1,24 +1,14 @@
-import 'dart:typed_data';
-
-import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hands_test/app.dart';
-import 'package:hands_test/core/services/agora_service.dart';
 import 'package:hands_test/core/services/firestore/firestore_interpreter.dart';
-import 'package:hands_test/core/services/firestore/firestore_student.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/features/interpreter/presentation/interpreter_screen.dart';
 import 'package:hands_test/model/interpreter.dart';
-import 'package:hands_test/model/student.dart';
-import 'package:image/image.dart' as img;
-import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
-import '../presentation/interpreter_home_view.dart';
 import '../presentation/interpreter_profile.dart';
 
 class InterpreterViewModel extends GetxController {
@@ -42,7 +32,7 @@ class InterpreterViewModel extends GetxController {
   void onInit() async {
     super.onInit();
     getInterpreter();
-    await initAgora();
+    // await initializeAgora();
   }
 
   @override

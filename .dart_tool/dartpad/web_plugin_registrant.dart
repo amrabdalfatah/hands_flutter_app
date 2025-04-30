@@ -12,6 +12,7 @@ import 'package:cloud_firestore_web/cloud_firestore_web.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:firebase_core_web/firebase_core_web.dart';
 import 'package:flutter_tts/flutter_tts_web.dart';
+import 'package:fluttertoast/fluttertoast_web.dart';
 import 'package:iris_method_channel/iris_method_channel_web.dart';
 import 'package:permission_handler_html/permission_handler_html.dart';
 import 'package:speech_to_text/speech_to_text_web.dart';
@@ -26,6 +27,7 @@ void registerPlugins([final Registrar? pluginRegistrar]) {
   FirebaseAuthWeb.registerWith(registrar);
   FirebaseCoreWeb.registerWith(registrar);
   FlutterTtsPlugin.registerWith(registrar);
+  FluttertoastWebPlugin.registerWith(registrar);
   IrisMethodChannelWeb.registerWith(registrar);
   WebPermissionHandler.registerWith(registrar);
   SpeechToTextPlugin.registerWith(registrar);

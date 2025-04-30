@@ -1,10 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-const String appId = "550ce048c6c6478a9cce2a051fb15826";
-const String channelName = "testChannel";
+import 'package:hands_test/core/services/agora_service.dart';
 
 class CallScreen extends StatefulWidget {
   const CallScreen({super.key});
@@ -14,150 +11,300 @@ class CallScreen extends StatefulWidget {
 }
 
 class _CallScreenState extends State<CallScreen> {
-  // bool _isJoined = false;
-  bool localUserJoined = false;
-  int? remoteId;
+  final _users = <int>[];
+  final _infoStrings = <String>[];
+  bool muted = false;
+  bool videoDisabled = false;
+  bool viewPanelVisible = true;
   late RtcEngine _engine;
-  Future<void> initAgora() async {
-    await [Permission.camera, Permission.microphone].request();
-
-    _engine = createAgoraRtcEngine();
-    await _engine.initialize(const RtcEngineContext(appId: appId));
-
-    // await _engine!.enableVideo();
-    // await _engine!.startPreview();
-
-    _engine.registerEventHandler(RtcEngineEventHandler(
-      onJoinChannelSuccess: (conn, elapsed) {
-        print("Joined channel: conn.channelId");
-        setState(() {
-          localUserJoined = true;
-        });
-      },
-      onUserJoined: (conn, remoteUid, elapsed) {
-        print("/////////////////////////////");
-        print("/////////////////////////////");
-        print("/////////////////////////////");
-        print("/////////////////////////////");
-        print("Remote user joined:$remoteUid");
-        setState(() {
-          remoteId = remoteUid;
-        });
-      },
-      onUserOffline: (conn, remote, rea) {
-        setState(() {
-          remoteId = null;
-        });
-      },
-      onTokenPrivilegeWillExpire: (con, tok) {},
-    ));
-    // await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await _engine.enableVideo();
-    await _engine.startPreview();
-
-    await _engine.joinChannel(
-      token: "anytoken",
-      channelId: channelName,
-      uid: 0,
-      options: ChannelMediaOptions(),
-    );
-  }
-
-  @override
-  void dispose() async {
-    await _engine.leaveChannel();
-    await _engine.release();
-    super.dispose();
-  }
 
   @override
   void initState() {
     super.initState();
-    // startCall();
-    // startCallAndListen();
-    initAgora();
+    initialize();
   }
 
-  // Future<void> startCallAndListen() async {
-  //   await startCall();
+  @override
+  void dispose() {
+    _users.clear();
+    _engine.leaveChannel();
+    _engine.release();
+    super.dispose();
+  }
 
-  //   agoraEngine.registerEventHandler(
-  //     RtcEngineEventHandler(
-  //       onJoinChannelSuccess: (connection, elapsed) {
-  //         setState(() {
-  //           _isJoined = true;
-  //         });
-  //       },
-  //       onLeaveChannel: (connection, stats) {
-  //         setState(() {
-  //           _isJoined = false;
-  //         });
-  //       },
-  //     ),
-  //   );
-  // }
+  Future<void> initialize() async {
+    if (appId.isEmpty) {
+      setState(() {
+        _infoStrings.add('APP_ID missing, please provide your APP_ID');
+        _infoStrings.add('Agora Engine is not starting');
+      });
+      return;
+    }
 
-  // Future<void> endCall() async {
-  //   await agoraEngine.leaveChannel();
-  //   Get.back();
-  // }
+    await _initAgoraRtcEngine();
+    _addAgoraEventHandlers();
+    await _engine.joinChannel(
+      token: token, // Use token for production
+      channelId: channelName,
+      uid: 0, // Let Agora assign a UID
+      options: const ChannelMediaOptions(
+        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+        clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      ),
+    );
+  }
 
-  // @override
-  // void dispose() {
-  //   agoraEngine.leaveChannel();
-  //   super.dispose();
-  // }
+  Future<void> _initAgoraRtcEngine() async {
+    _engine = createAgoraRtcEngine();
+    await _engine.initialize(const RtcEngineContext(appId: appId));
+
+    await _engine.enableVideo();
+    await _engine
+        .setChannelProfile(ChannelProfileType.channelProfileLiveBroadcasting);
+    await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+  }
+
+  void _addAgoraEventHandlers() {
+    _engine.registerEventHandler(
+      RtcEngineEventHandler(
+        onError: (ErrorCodeType err, String msg) {
+          setState(() {
+            final info = 'Error: $err, $msg';
+            _infoStrings.add(info);
+          });
+        },
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          setState(() {
+            final info = 'Joined channel: ${connection.channelId}';
+            _infoStrings.add(info);
+          });
+        },
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+          setState(() {
+            final info = 'Remote user joined: $remoteUid';
+            _infoStrings.add(info);
+            _users.add(remoteUid);
+          });
+        },
+        onUserOffline: (RtcConnection connection, int remoteUid,
+            UserOfflineReasonType reason) {
+          setState(() {
+            final info = 'Remote user left: $remoteUid';
+            _infoStrings.add(info);
+            _users.remove(remoteUid);
+          });
+        },
+        onLeaveChannel: (RtcConnection connection, RtcStats stats) {
+          setState(() {
+            _infoStrings.add('Left the channel');
+            _users.clear();
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _viewRows() {
+    final List<Widget> list = [];
+    if (channelName.isNotEmpty) {
+      list.add(_localView());
+    }
+    for (var uid in _users) {
+      list.add(_remoteView(uid));
+    }
+    return Column(
+      children: list.map((widget) => Flexible(child: widget)).toList(),
+    );
+  }
+
+  Widget _localView() {
+    return AgoraVideoView(
+      controller: VideoViewController(
+        rtcEngine: _engine,
+        canvas: const VideoCanvas(uid: 0),
+      ),
+    );
+  }
+
+  Widget _remoteView(int uid) {
+    return AgoraVideoView(
+      controller: VideoViewController.remote(
+        rtcEngine: _engine,
+        canvas: VideoCanvas(uid: uid),
+        connection: RtcConnection(channelId: channelName),
+      ),
+    );
+  }
+
+  Widget _toolbar() {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          RawMaterialButton(
+            onPressed: _onToggleMute,
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: muted ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
+            child: Icon(
+              muted ? Icons.mic_off : Icons.mic,
+              color: muted ? Colors.white : Colors.blueAccent,
+              size: 20.0,
+            ),
+          ),
+          RawMaterialButton(
+            onPressed: () => _onCallEnd(context),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(15.0),
+            child: const Icon(
+              Icons.call_end,
+              color: Colors.white,
+              size: 25.0,
+            ),
+          ),
+          RawMaterialButton(
+            onPressed: _onToggleVideo,
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: videoDisabled ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
+            child: Icon(
+              videoDisabled ? Icons.videocam_off : Icons.videocam,
+              color: videoDisabled ? Colors.white : Colors.blueAccent,
+              size: 20.0,
+            ),
+          ),
+          RawMaterialButton(
+            onPressed: _onSwitchCamera,
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
+            child: const Icon(
+              Icons.switch_camera,
+              color: Colors.blueAccent,
+              size: 20.0,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _panel() {
+    return Visibility(
+      visible: viewPanelVisible,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 48),
+        alignment: Alignment.bottomCenter,
+        child: FractionallySizedBox(
+          heightFactor: 0.5,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 48),
+            child: ListView.builder(
+              reverse: true,
+              itemCount: _infoStrings.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (_infoStrings.isEmpty) {
+                  return const Text('No logs yet');
+                }
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 3,
+                    horizontal: 10,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 2,
+                            horizontal: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            _infoStrings[index],
+                            style: const TextStyle(color: Colors.blueGrey),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onCallEnd(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  void _onToggleMute() {
+    setState(() {
+      muted = !muted;
+    });
+    _engine.muteLocalAudioStream(muted);
+  }
+
+  void _onToggleVideo() {
+    setState(() {
+      videoDisabled = !videoDisabled;
+    });
+    _engine.muteLocalVideoStream(videoDisabled);
+  }
+
+  void _onSwitchCamera() {
+    _engine.switchCamera();
+  }
+
+  void _onTogglePanel() {
+    setState(() {
+      viewPanelVisible = !viewPanelVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          Center(
-            child: AgoraVideoView(
-              controller: VideoViewController.remote(
-                rtcEngine: _engine,
-                canvas: VideoCanvas(uid: remoteId),
-                connection: const RtcConnection(channelId: channelName),
+      body: Center(
+        child: Stack(
+          children: <Widget>[
+            _viewRows(),
+            _panel(),
+            _toolbar(),
+            Positioned(
+              top: 20,
+              left: 20,
+              child: IconButton(
+                icon: const Icon(Icons.info_outline, color: Colors.white),
+                onPressed: _onTogglePanel,
               ),
             ),
-          ),
-          // AgoraVideoView(
-          //   controller: VideoViewController(
-          //     rtcEngine: _engine,
-          //     canvas: const VideoCanvas(uid: 0),
-          //   ),
-          // ),
-        ],
+            const Positioned(
+              top: 20,
+              right: 20,
+              child: Text(
+                'Channel: $channelName',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
       ),
-      // body: Stack(
-      //   children: [
-      //     Center(
-      //       child: _isJoined
-      //           ? AgoraVideoView(
-      //               controller: VideoViewController(
-      //                 rtcEngine: agoraEngine,
-      //                 canvas: const VideoCanvas(uid: 0),
-      //               ),
-      //             )
-      //           : const Text(
-      //               'Joining Channel...',
-      //               style: TextStyle(color: Colors.white),
-      //             ),
-      //     ),
-      //     Positioned(
-      //       bottom: 40,
-      //       left: MediaQuery.of(context).size.width * 0.3,
-      //       right: MediaQuery.of(context).size.width * 0.3,
-      //       child: FloatingActionButton(
-      //         backgroundColor: Colors.red,
-      //         onPressed: endCall,
-      //         child: const Icon(Icons.call_end, color: Colors.white),
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
