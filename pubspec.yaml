@@ -48,6 +48,8 @@ dependencies:
   agora_rtc_engine: ^6.5.1
   permission_handler: ^11.0.0
   get_storage: ^2.1.1
+  uuid: ^3.0.7
+  fluttertoast: ^8.2.2
 
   # Speech Recognition
   speech_to_text: ^7.0.0

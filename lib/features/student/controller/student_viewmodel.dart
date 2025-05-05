@@ -10,7 +10,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hands_test/app.dart';
 import 'package:hands_test/core/services/firestore/firestore_student.dart';
 import 'package:hands_test/core/utils/constants.dart';
-import 'package:hands_test/model/interpreter.dart';
 import 'package:hands_test/model/student.dart';
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
@@ -169,7 +168,7 @@ class StudentViewModel extends GetxController {
     if (!cameraController!.value.isStreamingImages) return;
     img.Image imageNew =
         convertCameraImage(image, targetWidth: 224, targetHeight: 224);
-    final result = runInference(imageNew);
+    runInference(imageNew);
   }
 
   // Convert

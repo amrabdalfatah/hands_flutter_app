@@ -50,6 +50,5 @@ class SelectionButton extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
