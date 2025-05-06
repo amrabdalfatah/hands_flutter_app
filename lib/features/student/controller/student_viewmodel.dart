@@ -12,7 +12,7 @@ import 'package:hands_test/core/services/firestore/firestore_student.dart';
 import 'package:hands_test/core/utils/constants.dart';
 import 'package:hands_test/model/student.dart';
 import 'package:image/image.dart' as img;
-import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
+// import 'package:tflite_flutter/tflite_flutter.dart' as tfl;
 
 import '../presentation/home_view.dart';
 import '../presentation/student_settings.dart';
@@ -37,7 +37,8 @@ class StudentViewModel extends GetxController {
   RxBool loaded = true.obs;
   ValueNotifier<int> screenIndex = ValueNotifier(0);
   CameraController? cameraController;
-  late tfl.Interpreter interpreter;
+  // late tfl.Interpreter interpreterHands;
+  // late tfl.Interpreter interpreter;
 
   // Use RxString for reactive state management
   RxString result = ''.obs;
@@ -56,7 +57,7 @@ class StudentViewModel extends GetxController {
   @override
   void onClose() {
     cameraController?.dispose();
-    interpreter.close();
+    // interpreter.close();
     super.onClose();
   }
 
@@ -110,7 +111,9 @@ class StudentViewModel extends GetxController {
   // Load the TensorFlow Lite model
   Future<void> _loadModel() async {
     try {
-      interpreter = await tfl.Interpreter.fromAsset('assets/model.tflite');
+      // interpreterHands = await tfl.Interpreter.fromAsset('assets/hands.tflite');
+
+      // interpreter = await tfl.Interpreter.fromAsset('assets/model.tflite');
 
       await cameraController!.startImageStream((CameraImage image) async {
         await runModelOnFrame(image);
@@ -141,11 +144,38 @@ class StudentViewModel extends GetxController {
     return input;
   }
 
-  String runInference(img.Image image) {
+  // Preprocess the image (resize, normalize, etc.)
+  List<Uint8List> preprocessImageA(img.Image image) {
+    img.Image resized = img.copyResize(
+      image,
+      width: 224,
+      height: 224,
+    );
+
+    Uint8List input = Uint8List(resized.width * resized.height * 3);
+    int index = 0;
+
+    for (int y = 0; y < resized.height; y++) {
+      for (int x = 0; x < resized.width; x++) {
+        final pixel = resized.getPixel(x, y);
+        input[index++] = pixel.r.toInt();
+        input[index++] = pixel.g.toInt();
+        input[index++] = pixel.b.toInt();
+      }
+    }
+
+    return [input];
+  }
+
+  Future<String> runInference(img.Image image) async {
     List<double> input = preprocessImage(image);
+    var inputA = preprocessImageA(image);
     var inputTensor = [input];
     var output = List.generate(1194, (_) => List.filled(45, 0.0));
-    interpreter.run(inputTensor, output);
+    // Run inference on the model
+
+    // interpreterHands.run(inputTensor, output);
+    // interpreter.run(inputTensor, output);
     int bestIndex = 0;
     double maxVal = 0;
 
@@ -166,9 +196,15 @@ class StudentViewModel extends GetxController {
   // new runModel
   Future<void> runModelOnFrame(CameraImage image) async {
     if (!cameraController!.value.isStreamingImages) return;
+    processImage(image);
     img.Image imageNew =
         convertCameraImage(image, targetWidth: 224, targetHeight: 224);
     runInference(imageNew);
+  }
+
+  Future<void> processImage(CameraImage image) async {
+    // Preprocess image (resize, convert to RGB, etc.)
+    // var input = preprocessImage(image);
   }
 
   // Convert

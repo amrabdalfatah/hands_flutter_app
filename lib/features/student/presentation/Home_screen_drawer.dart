@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:hands_test/features/student/controller/student_viewmodel.dart';
 
-class HomeScreenDrawer extends StatelessWidget {
+class HomeScreenDrawer extends GetWidget<StudentViewModel> {
   const HomeScreenDrawer({super.key});
 
   @override
@@ -35,8 +37,7 @@ class HomeScreenDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pop(context); // Close the drawer after logging out
+              controller.signOut();
             },
           ),
         ],

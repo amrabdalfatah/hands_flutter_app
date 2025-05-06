@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hands_test/features/interpreter/presentation/call_screen.dart';
 import 'package:hands_test/features/student/controller/student_viewmodel.dart';
 import 'audio_to_text_screen.dart';
 import 'emergency_session_screen.dart';
@@ -102,6 +103,7 @@ class HomeView extends GetWidget<StudentViewModel> {
                   startColor: Colors.redAccent,
                   endColor: Colors.deepOrangeAccent,
                   onTap: () => Get.to(() => const EmergencySessionScreen()),
+                  // onTap: () => Get.to(() => const CallScreen()),
                 ),
               ],
             ),

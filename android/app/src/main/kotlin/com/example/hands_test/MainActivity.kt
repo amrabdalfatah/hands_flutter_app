@@ -16,13 +16,13 @@ class MainActivity: FlutterFragmentActivity() {
     private lateinit var methodChannelResult: MethodChannel.Result
 
     private val getContent = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-        uri: Uri? -> lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                uri?.let { mediaUri ->
-                    methodChannelResult.success("$mediaUri")
-                }
+            uri: Uri? -> lifecycleScope.launch {
+        withContext(Dispatchers.IO) {
+            uri?.let { mediaUri ->
+                methodChannelResult.success("$mediaUri")
             }
         }
+    }
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -33,8 +33,8 @@ class MainActivity: FlutterFragmentActivity() {
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             "pickImagePlatform"
-            ).setMethodCallHandler { call, result ->
-                methodChannelResult = result
+        ).setMethodCallHandler { call, result ->
+            methodChannelResult = result
             when (call.method) {
                 "pickImage" -> {
                     getContent.launch(arrayOf("image/*"))

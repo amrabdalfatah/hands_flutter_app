@@ -167,18 +167,18 @@ class _CallScreenState extends State<CallScreen> {
               size: 25.0,
             ),
           ),
-          RawMaterialButton(
-            onPressed: _onToggleVideo,
-            shape: const CircleBorder(),
-            elevation: 2.0,
-            fillColor: videoDisabled ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
-            child: Icon(
-              videoDisabled ? Icons.videocam_off : Icons.videocam,
-              color: videoDisabled ? Colors.white : Colors.blueAccent,
-              size: 20.0,
-            ),
-          ),
+          // RawMaterialButton(
+          //   onPressed: _onToggleVideo,
+          //   shape: const CircleBorder(),
+          //   elevation: 2.0,
+          //   fillColor: videoDisabled ? Colors.blueAccent : Colors.white,
+          //   padding: const EdgeInsets.all(12.0),
+          //   child: Icon(
+          //     videoDisabled ? Icons.videocam_off : Icons.videocam,
+          //     color: videoDisabled ? Colors.white : Colors.blueAccent,
+          //     size: 20.0,
+          //   ),
+          // ),
           RawMaterialButton(
             onPressed: _onSwitchCamera,
             shape: const CircleBorder(),
@@ -284,24 +284,24 @@ class _CallScreenState extends State<CallScreen> {
         child: Stack(
           children: <Widget>[
             _viewRows(),
-            _panel(),
+            // _panel(),
             _toolbar(),
-            Positioned(
-              top: 20,
-              left: 20,
-              child: IconButton(
-                icon: const Icon(Icons.info_outline, color: Colors.white),
-                onPressed: _onTogglePanel,
-              ),
-            ),
-            const Positioned(
-              top: 20,
-              right: 20,
-              child: Text(
-                'Channel: $channelName',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            // Positioned(
+            //   top: 20,
+            //   left: 20,
+            //   child: IconButton(
+            //     icon: const Icon(Icons.info_outline, color: Colors.white),
+            //     onPressed: _onTogglePanel,
+            //   ),
+            // ),
+            // const Positioned(
+            //   top: 20,
+            //   right: 20,
+            //   child: Text(
+            //     'Channel: $channelName',
+            //     style: TextStyle(color: Colors.white),
+            //   ),
+            // ),
           ],
         ),
       ),
