@@ -68,6 +68,48 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
             case 'السلام':
               _currentImage = "assets/videos/salam.gif";
               break;
+            case 'العفو':
+              _currentImage = "assets/videos/you'reWelcome.gif";
+              break;
+            case 'عفوا':
+              _currentImage = "assets/videos/you'reWelcome.gif";
+              break;
+            case 'اكتب':
+              _currentImage = "assets/videos/write.gif";
+              break;
+            case 'امس':
+              _currentImage = "assets/videos/yesterday.gif";
+              break;
+            case 'من متى':
+              _currentImage = "assets/videos/when.gif";
+              break;
+            case 'شكرا':
+              _currentImage = "assets/videos/tanks.gif";
+              break;
+            case 'بطن':
+              _currentImage = "assets/videos/stomache.gif";
+              break;
+            case 'بطني':
+              _currentImage = "assets/videos/stomache.gif";
+              break;
+            case 'بطنك':
+              _currentImage = "assets/videos/stomache.gif";
+              break;
+            case 'يعورك':
+              _currentImage = "assets/videos/painYou.gif";
+              break;
+            case 'يعورني':
+              _currentImage = "assets/videos/pain.gif";
+              break;
+            case 'دواء':
+              _currentImage = "assets/videos/medicine.gif";
+              break;
+            case 'انا راح':
+              _currentImage = "assets/videos/Iwill.gif";
+              break;
+            case 'طبيب':
+              _currentImage = "assets/videos/dr.gif";
+              break;
             case 'عليكم':
               _currentImage = "assets/videos/alikom.gif";
               break;
