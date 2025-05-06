@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: Binding(),
-      home: const HomePage(),
-      // home: controller.mainScreen,
+      // home: const HomePage(),
+      home: controller.mainScreen,
     );
   }
 }

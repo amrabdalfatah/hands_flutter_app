@@ -79,7 +79,7 @@ class InterpreterProfile extends GetWidget<InterpreterViewModel> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(12),
-                  backgroundColor: Colors.blueAccent,
+                  backgroundColor: Colors.red,
                 ),
                 child: const Text(
                   "Logout",

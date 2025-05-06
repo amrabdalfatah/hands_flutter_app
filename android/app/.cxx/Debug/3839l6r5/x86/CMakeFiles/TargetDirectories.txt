@@ -1,0 +1,2 @@
+/Users/amr/work/hands_app/android/app/.cxx/Debug/3839l6r5/x86/CMakeFiles/edit_cache.dir
+/Users/amr/work/hands_app/android/app/.cxx/Debug/3839l6r5/x86/CMakeFiles/rebuild_cache.dir
