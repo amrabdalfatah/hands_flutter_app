@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hands_test/features/interpreter/controller/interpreter_viewmodel.dart';
-import 'package:hands_test/features/student/presentation/call_screen.dart';
+import 'package:hands_test/features/interpreter/presentation/call_screen.dart';
 
 class InterpreterScreen extends GetWidget<InterpreterViewModel> {
   const InterpreterScreen({super.key});
@@ -50,7 +51,6 @@ class InterpreterScreen extends GetWidget<InterpreterViewModel> {
             ),
           ),
           const SizedBox(height: 20),
-          
           Expanded(
             child: GridView.count(
               crossAxisCount: 2, // Two cards per row
@@ -58,13 +58,38 @@ class InterpreterScreen extends GetWidget<InterpreterViewModel> {
               crossAxisSpacing: 16,
               childAspectRatio: 1.2,
               children: [
-                
-                GradientCard(
-                  title: "Emergency \nSession",
-                  icon: Icons.warning,
-                  startColor: Colors.redAccent,
-                  endColor: Colors.deepOrangeAccent,
-                  onTap: () => Get.to(() => const CallScreen()),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('Interpreter')
+                      .where('request_call', isEqualTo: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      Get.snackbar(
+                        "Request",
+                        "Student sent to you request for call",
+                        colorText: Colors.green,
+                        snackPosition: SnackPosition.TOP,
+                        duration: const Duration(seconds: 4),
+                      );
+                    }
+                    final interpreters = snapshot.data!.docs;
+                    return interpreters.isEmpty
+                        ? GradientCard(
+                            title: "Emergency \nSession",
+                            icon: Icons.warning,
+                            startColor: Colors.redAccent,
+                            endColor: Colors.deepOrangeAccent,
+                            onTap: () {},
+                          )
+                        : GradientCard(
+                            title: "Emergency \nSession",
+                            icon: Icons.warning,
+                            startColor: Colors.redAccent,
+                            endColor: Colors.deepOrangeAccent,
+                            onTap: () => Get.to(() => const CallScreen()),
+                          );
+                  },
                 ),
               ],
             ),

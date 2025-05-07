@@ -60,7 +60,7 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
     currentWordIndex = 0;
     _timer?.cancel(); // Cancel any previous timer
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (currentWordIndex < allTexts.length) {
         setState(() {
           // Here you can map the word to corresponding image if needed

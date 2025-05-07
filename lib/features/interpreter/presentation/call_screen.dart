@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:hands_test/core/services/agora_service.dart';
+import 'package:hands_test/core/utils/constants.dart';
 
 class CallScreen extends StatefulWidget {
   const CallScreen({super.key});
@@ -248,7 +250,13 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  void _onCallEnd(BuildContext context) {
+  void _onCallEnd(BuildContext context) async {
+    await FirebaseFirestore.instance
+        .collection("Interpreter")
+        .doc(AppConstants.userId)
+        .update({
+      "request_call": false,
+    });
     Navigator.pop(context);
   }
 

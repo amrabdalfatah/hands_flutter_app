@@ -77,6 +77,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
           fullName: _fullNameController.text.trim(),
           email: _emailController.text.trim(),
           active: true,
+          requestCall: false,
         );
 
         await FirebaseFirestore.instance

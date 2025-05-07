@@ -50,8 +50,10 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
                           Icons.online_prediction,
                           color: Colors.green,
                         ),
-                        onTap: () {
-                          
+                        onTap: () async {
+                          await FirebaseFirestore.instance.collection("Interpreter").doc(user.id).update({
+                            "request_call": true,
+                          });
                           Get.to(() => CallScreen());
                         },
                       ),
