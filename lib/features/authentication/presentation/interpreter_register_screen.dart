@@ -91,7 +91,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
           'Success',
           'Register Success',
           snackPosition: SnackPosition.TOP,
-          colorText: Colors.green,
+          colorText: Colors.blueAccent,
         );
       } else {
         setState(() {
@@ -123,41 +123,41 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDBE8E6),
+      backgroundColor:  Colors.white,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 height: 200,
-                color: const Color(0xFFDBE8E6),
-                child: Image.asset('assets/images/handsinwords_logo.png',
+                color: Colors.white,
+                child: Image.asset('assets/images/HandsInWordsLogo.png',
                     height: 300),
               ),
               Container(
                 height: 50,
                 width: 400,
-                color: const Color(0xFFDBE8E6),
+                color:  Colors.white,
                 child: const Text(
                   "Welcome To HandsInWords!",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w400,
-                    color: Color.fromARGB(255, 68, 67, 67),
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blueAccent,
                   ),
                 ),
               ),
               Container(
                 height: 40,
                 width: 400,
-                color: const Color(0xFFDBE8E6),
+                color:  Colors.white,
                 child: const Text(
                   "Let's get your task completed",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
                     color: Color.fromARGB(255, 5, 5, 5),
                   ),
                 ),
@@ -261,7 +261,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
                           padding: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(35),
-                            color: const Color(0xFF45CECE),
+                            color:  Colors.blueAccent,
                             border: Border.all(color: Colors.white),
                           ),
                           child: Center(
@@ -294,7 +294,7 @@ class _InterpreterRegisterScreen extends State<InterpreterRegisterScreen> {
                   child: const Text('Sign In',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
-                        color: Color.fromARGB(255, 57, 171, 171),
+                        color:  Colors.blueAccent,
                         fontSize: 16,
                       )),
                 ),
