@@ -10,6 +10,8 @@ class AudioToSignScreen extends StatefulWidget {
   State<AudioToSignScreen> createState() => _AudioToSignScreenState();
 }
 
+// edit for old version of mac
+
 class _AudioToSignScreenState extends State<AudioToSignScreen> {
   late stt.SpeechToText _speech;
   bool _isListening = false;
