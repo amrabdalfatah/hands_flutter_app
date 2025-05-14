@@ -12,17 +12,20 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarkerResult
-import com.example.hands_test.GestureRecognizerHelper
+// import com.example.hands_test.GestureRecognizerHelper
+import com.example.hands_test.HandLandmarkerHelper
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecognizerListener {
+// class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecognizerListener {
+class CameraActivity : ComponentActivity(), HandLandmarkerHelper.LandmarkerListener {
 
     private lateinit var cameraExecutor: ExecutorService
-    private var gestureRecognizerHelper: GestureRecognizerHelper? = null
+    // private var gestureRecognizerHelper: GestureRecognizerHelper? = null
+    private var handLandmarker: HandLandmarkerHelper? = null
     private var imageAnalyzer: ImageAnalysis? = null
 
-    private lateinit var overlayView: OverlayView
+    private lateinit var overlayView: OverlayViewH
 
     private val cameraPermissionCode = 101
     private val TAG = "CameraActivity"
@@ -44,7 +47,7 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
         setContentView(R.layout.activity_camera)
 
         val previewView = findViewById<androidx.camera.view.PreviewView>(R.id.previewView)
-        overlayView = findViewById<OverlayView>(R.id.overlay)
+        overlayView = findViewById<OverlayViewH>(R.id.overlay)
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -83,22 +86,22 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
     }
 
     private fun setupGestureRecognizer() {
-        gestureRecognizerHelper = GestureRecognizerHelper(
+        handLandmarker = HandLandmarkerHelper(
             context = this,
             runningMode = RunningMode.LIVE_STREAM,
-            gestureRecognizerListener = this
+            handLandmarkerHelperListener = this
         )
     }
 
     private fun recognizeHandGesture(imageProxy: ImageProxy) {
         Log.d("Analyzer", "Frame received")
-        gestureRecognizerHelper?.recognizeLiveStream(imageProxy)
+        handLandmarker?.detectLiveStream(imageProxy, true)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-        gestureRecognizerHelper?.clearGestureRecognizer()
+        handLandmarker?.clearHandLandmarker()
     }
 
     private fun allPermissionsGranted(): Boolean {
@@ -122,16 +125,16 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
 
     // === GestureRecognizerListener methods ===
 
-    override fun onResults(resultBundle: GestureRecognizerHelper.ResultBundle) {
+    override fun onResults(resultBundle: HandLandmarkerHelper.ResultBundle) {
         val handResult = resultBundle.results.firstOrNull()
 
-        handResult?.gestures()?.firstOrNull()?.let {
-            val category = it.firstOrNull()?.categoryName()
-            runOnUiThread {
-                Toast.makeText(this, "Gesture: $category", Toast.LENGTH_SHORT).show()
-            }
-        }
-        val gestures = resultBundle.results.firstOrNull()?.gestures()
+        // handResult?.gestures()?.firstOrNull()?.let {
+        //     // val category = it.firstOrNull()?.categoryName()
+        //     // runOnUiThread {
+        //     //     Toast.makeText(this, "Gesture: $category", Toast.LENGTH_SHORT).show()
+        //     // }
+        // }
+        // val gestures = resultBundle.results.firstOrNull()?.gestures()
         // gestures?.firstOrNull()?.let {
         //     val category = it.firstOrNull()?.categoryName()
         //     Log.i(TAG, "Detected gesture: $category")
