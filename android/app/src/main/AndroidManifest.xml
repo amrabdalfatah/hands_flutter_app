@@ -16,6 +16,11 @@
         android:label="Hands Test"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <activity 
+            android:name=".CameraActivity" 
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -39,6 +44,7 @@
             </intent-filter>
 
         </activity>
+        
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

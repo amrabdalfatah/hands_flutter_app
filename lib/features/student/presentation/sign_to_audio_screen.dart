@@ -1,50 +1,84 @@
-import 'dart:io';
+import 'dart:async';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
-// import 'package:flutter_mediapipe/gen/landmark.pb.dart' as media;
-
-import '../controller/student_viewmodel.dart';
-
-class SignToAudioScreen extends StatelessWidget {
+class SignToAudioScreen extends StatefulWidget {
   const SignToAudioScreen({super.key});
+
+  @override
+  State<SignToAudioScreen> createState() => _SignToAudioScreenState();
+}
+
+class _SignToAudioScreenState extends State<SignToAudioScreen> {
+  // static const _eventChannel = EventChannel("signLanguageToAudio");
+  static const _channel = MethodChannel("cameraControl");
+
+  String _status = "Press the button to start camera";
+
+  // StreamSubscription? _subscription;
+  // String data = "Waiting for data...";
+
+  @override
+  void initState() {
+    super.initState();
+    // _startListening();
+  }
+
+  // _startListening() {
+  //   _eventChannel.receiveBroadcastStream().listen(
+  //     (event) {
+  //       setState(() {
+  //         _status = event.toString();
+  //       });
+  //     },
+  //     onError: (error) {
+  //       setState(() {
+  //         _status = "Error: $error";
+  //       });
+  //     },
+  //   );
+  // }
+
+  Future<void> _startCamera() async {
+    try {
+      await _channel.invokeMethod("startCamera");
+    } on PlatformException catch (e) {
+      setState(() {
+        _status = "Failed to start camera: '${e.message}'.";
+      });
+    }
+  }
+
+  // @override
+  // void dispose() {
+  //   _subscription?.cancel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          GetBuilder<StudentViewModel>(
-            builder: (cont) {
-              return cont.loaded.value
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : CameraPreview(cont.cameraController!);
-            },
-          ),
-          Positioned(
-            top: 40,
-            left: 20,
-            right: 20,
-            child: Obx(
-              () => Text(
-                "any",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  backgroundColor: Colors.black54,
-                ),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                _status,
                 textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
               ),
-            ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: _startCamera,
+                child: Text('Start Camera'),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
