@@ -9,9 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.example.hands_test.OverlayViewH
+    <com.example.hands_test.OverlayView
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent" />
+
+    <TextView
+        android:id="@+id/predictionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waiting for prediction..."
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="#80000000"
+        android:padding="8dp"/>
 </FrameLayout>
