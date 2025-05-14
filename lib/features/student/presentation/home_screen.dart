@@ -48,23 +48,15 @@ class HomeScreen extends StatelessWidget {
                   ), // Ensure menu icon is visible
                   centerTitle: true, // Centers the title
                   actions: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        right: 16,
-                      ), // Moves notification icon further right
-                      child: Transform.translate(
-                        offset: const Offset(0, 10), // Moves the icon downward
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.notifications,
-                            color: Color.fromARGB(255, 100, 97, 97),
-                          ),
-                          iconSize: 30,
-                          onPressed: () {
-                            // TODO: Handle notification action
-                          },
-                        ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.notifications,
+                        color: Color.fromARGB(255, 100, 97, 97),
                       ),
+                      iconSize: 30,
+                      onPressed: () {
+                        // TODO: Handle notification action
+                      },
                     ),
                   ],
                 ),

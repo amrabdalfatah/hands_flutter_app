@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hands_test/features/interpreter/presentation/call_screen.dart';
 import 'package:hands_test/features/student/controller/student_viewmodel.dart';
 import 'audio_to_text_screen.dart';
 import 'emergency_session_screen.dart';
@@ -20,39 +19,43 @@ class HomeView extends GetWidget<StudentViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CircleAvatar(
-            radius: 45,
-            backgroundColor: Colors.grey,
-            child: Icon(Icons.person, size: 48, color: Colors.white),
-          ),
-          const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: RichText(
-              text: TextSpan(
+          Row(
+            children: [
+              const CircleAvatar(
+                radius: 45,
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage(
+                  "assets/images/HandsInWordsLogo.png",
+                ),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TextSpan(
-                    text: "Hello, ",
+                  const Text(
+                    "Hello, ",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
                     ),
                   ),
-                  TextSpan(
-                    text: controller
-                        .studentData!.fullName, // User's email or fallback
+                  Text(
+                    controller
+                        .studentData!.fullName!, // User's email or fallback
                     style: const TextStyle(
                       fontSize: 24, // Same size for consistency
                       fontWeight: FontWeight.w400,
-                      color: Color(
-                          0xFF236868), // Different color (Teal) for distinction
+                      color: Color.fromRGBO(35, 104, 104,
+                          1), // Different color (Teal) for distinction
                     ),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
+          const SizedBox(height: 24),
+
           const SizedBox(height: 20),
           const Center(
             child: Text(
