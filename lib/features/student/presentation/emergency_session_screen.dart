@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,21 +39,32 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
                 )
               : ListView.builder(
                   itemCount: interpreters.length,
+                  padding: const EdgeInsets.all(16.0),
                   itemBuilder: (context, index) {
                     var user = Interpreter.fromJson(interpreters[index].data());
                     return Card(
                       child: ListTile(
-                        title: Text(user.fullName!),
+                        title: Text(
+                          user.fullName!,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
                         subtitle: Text(user.id!),
                         trailing: const Icon(
-                          Icons.online_prediction,
+                          Icons.video_call,
                           color: Colors.green,
                         ),
                         onTap: () async {
-                          await FirebaseFirestore.instance.collection("Interpreter").doc(user.id).update({
+                          await FirebaseFirestore.instance
+                              .collection("Interpreter")
+                              .doc(user.id)
+                              .update({
                             "request_call": true,
                           });
-                          Get.to(() => CallScreen());
+                          Get.to(() => const CallScreen());
                         },
                       ),
                     );
@@ -64,5 +74,4 @@ class _EmergencySessionScreenState extends State<EmergencySessionScreen> {
       ),
     );
   }
-
 }

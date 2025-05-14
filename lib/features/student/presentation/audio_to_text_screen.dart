@@ -5,7 +5,7 @@ class AudioToTextScreen extends StatefulWidget {
   const AudioToTextScreen({super.key});
 
   @override
-  _AudioToTextScreenState createState() => _AudioToTextScreenState();
+  State<AudioToTextScreen> createState() => _AudioToTextScreenState();
 }
 
 class _AudioToTextScreenState extends State<AudioToTextScreen> {
@@ -48,10 +48,11 @@ class _AudioToTextScreenState extends State<AudioToTextScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Audio to Text Converter'),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(

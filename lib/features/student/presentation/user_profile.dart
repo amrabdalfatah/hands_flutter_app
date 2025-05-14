@@ -26,7 +26,7 @@ class UserProfile extends GetWidget<StudentViewModel> {
             ),
             const SizedBox(height: 20),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.person,
                 color: Colors.blueAccent,
               ),
@@ -61,7 +61,7 @@ class UserProfile extends GetWidget<StudentViewModel> {
               ), // Example languages
             ),
             const Spacer(),
-            // Edit Profile Button
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

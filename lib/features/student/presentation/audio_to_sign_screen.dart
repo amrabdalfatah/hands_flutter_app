@@ -60,12 +60,11 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
 
   void _startShowingWords() {
     currentWordIndex = 0;
-    _timer?.cancel(); // Cancel any previous timer
+    _timer?.cancel();
 
     _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (currentWordIndex < allTexts.length) {
         setState(() {
-          // Here you can map the word to corresponding image if needed
           switch (allTexts[currentWordIndex]) {
             case 'السلام':
               _currentImage = "assets/videos/salam.gif";
@@ -145,7 +144,7 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
       } else {
         timer.cancel();
         setState(() {
-          _currentImage = "assets/videos/intro.gif"; // After finishing words
+          _currentImage = "assets/videos/intro.gif";
         });
       }
     });
@@ -170,7 +169,10 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
           FloatingActionButton(
             onPressed: _isListening ? _stopListening : _startListening,
             backgroundColor: Colors.blue,
-            child: Icon(_isListening ? Icons.mic_off : Icons.mic),
+            child: Icon(
+              _isListening ? Icons.mic_off : Icons.mic,
+              color: Colors.white,
+            ),
           ),
           const SizedBox(width: 12),
           Text(

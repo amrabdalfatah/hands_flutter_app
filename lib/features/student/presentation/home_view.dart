@@ -55,7 +55,6 @@ class HomeView extends GetWidget<StudentViewModel> {
             ],
           ),
           const SizedBox(height: 24),
-
           const SizedBox(height: 20),
           const Center(
             child: Text(
@@ -68,8 +67,6 @@ class HomeView extends GetWidget<StudentViewModel> {
             ),
           ),
           const SizedBox(height: 22),
-
-          // 🔹 New GradientCard UI replacing the old ListView
           Expanded(
             child: GridView.count(
               crossAxisCount: 2, // Two cards per row
@@ -105,8 +102,9 @@ class HomeView extends GetWidget<StudentViewModel> {
                   icon: Icons.warning,
                   startColor: Colors.redAccent,
                   endColor: Colors.deepOrangeAccent,
-                  onTap: () => Get.to(() => const EmergencySessionScreen()),
-                  // onTap: () => Get.to(() => const CallScreen()),
+                  onTap: () => Get.to(
+                    () => const EmergencySessionScreen(),
+                  ),
                 ),
               ],
             ),
@@ -117,7 +115,6 @@ class HomeView extends GetWidget<StudentViewModel> {
   }
 }
 
-// ✅ GradientCard Widget
 class GradientCard extends StatelessWidget {
   final String title;
   final IconData icon;

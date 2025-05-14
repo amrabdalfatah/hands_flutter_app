@@ -131,7 +131,7 @@ class _CallScreenState extends State<CallScreen> {
       controller: VideoViewController.remote(
         rtcEngine: _engine,
         canvas: VideoCanvas(uid: uid),
-        connection: RtcConnection(channelId: channelName),
+        connection: const RtcConnection(channelId: channelName),
       ),
     );
   }
@@ -196,58 +196,6 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  Widget _panel() {
-    return Visibility(
-      visible: viewPanelVisible,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 48),
-        alignment: Alignment.bottomCenter,
-        child: FractionallySizedBox(
-          heightFactor: 0.5,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 48),
-            child: ListView.builder(
-              reverse: true,
-              itemCount: _infoStrings.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (_infoStrings.isEmpty) {
-                  return const Text('No logs yet');
-                }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 3,
-                    horizontal: 10,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 2,
-                            horizontal: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Text(
-                            _infoStrings[index],
-                            style: const TextStyle(color: Colors.blueGrey),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   void _onCallEnd(BuildContext context) {
     Navigator.pop(context);
   }
@@ -270,12 +218,6 @@ class _CallScreenState extends State<CallScreen> {
     _engine.switchCamera();
   }
 
-  void _onTogglePanel() {
-    setState(() {
-      viewPanelVisible = !viewPanelVisible;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -284,24 +226,7 @@ class _CallScreenState extends State<CallScreen> {
         child: Stack(
           children: <Widget>[
             _viewRows(),
-            _panel(),
             _toolbar(),
-            Positioned(
-              top: 20,
-              left: 20,
-              child: IconButton(
-                icon: const Icon(Icons.info_outline, color: Colors.white),
-                onPressed: _onTogglePanel,
-              ),
-            ),
-            const Positioned(
-              top: 20,
-              right: 20,
-              child: Text(
-                'Channel: $channelName',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
           ],
         ),
       ),

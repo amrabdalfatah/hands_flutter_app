@@ -54,9 +54,14 @@ class StudentViewModel extends GetxController {
     await _loadModel();
   }
 
+  closeCamera() async {
+    await cameraController?.stopImageStream();
+    await cameraController?.dispose();
+  }
+
   @override
   void onClose() {
-    cameraController?.dispose();
+    closeCamera();
     // interpreter.close();
     super.onClose();
   }
