@@ -94,7 +94,7 @@ flutter:
     - assets/model_Tensorflow_new.tflite
     - assets/model.tflite
     - assets/hands.tflite
-    - assets/audio/
+    - assets/models/
     - assets/videos/
     - assets/
   # To add assets to your application, add an assets section, like this:
