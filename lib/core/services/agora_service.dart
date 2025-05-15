@@ -4,7 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 const String appId = "702aca58b91a4d45b9271b349bb0f428";
 const String channelName = "handsApp";
 const String token =
-    '007eJxTYOC6fWlfpIeO/ZHXF3n0Ujnvl2gVp2wSO6izdtpN572mebMUGMwNjBKTE00tkiwNE01STEyTLI3MDZOMTSyTkgzSTIwsNM5KZzQEMjLMl7rMwAiFID4HQ0ZiXkqxY0EBAwMAhKAftw==';
+    '007eJxTYFgs1GYV8K2xtr3e2W/bE6ebEgwWD88wRMmVP7zZK6NjKqvAYG5glJicaGqRZGmYaJJiYppkaWRumGRsYpmUZJBmYmRR2aWa0RDIyPDLcj0LIwMrAyMDEwOIz8AAAAvLG74=';
 
 late final RtcEngine agoraEngine;
 

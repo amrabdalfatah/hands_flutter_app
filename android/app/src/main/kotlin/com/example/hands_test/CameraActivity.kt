@@ -3,8 +3,12 @@ package com.example.hands_test
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import android.widget.TextView
+import android.media.MediaPlayer
 import androidx.activity.ComponentActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -22,7 +26,7 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import android.widget.TextView
+
 
 class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecognizerListener {
 
@@ -30,6 +34,7 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
     private var gestureRecognizerHelper: GestureRecognizerHelper? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private lateinit var predictionTextView: TextView
+    private var mediaPlayer: MediaPlayer? = null
 
     private lateinit var overlayView: OverlayView
     private lateinit var tflite: Interpreter
@@ -118,6 +123,8 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
 
     override fun onDestroy() {
         super.onDestroy()
+        mediaPlayer?.release()
+        mediaPlayer = null
         cameraExecutor.shutdown()
         gestureRecognizerHelper?.clearGestureRecognizer()
     }
@@ -207,7 +214,11 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
         // return inputBuffer
     }
 
+    private var isPredictionDelayed = false
+
     private fun runModel(landmarks: List<NormalizedLandmark>) {
+        if (isPredictionDelayed) return
+
         val input = preprocessLandmarks(landmarks)
         val output = Array(1) { FloatArray(signLanguageClasses.size) }
 
@@ -216,12 +227,71 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
         val predictionIndex = output[0].indices.maxByOrNull { output[0][it] } ?: -1
         val predictionLabel = signLanguageClasses.getOrNull(predictionIndex)
 
-        predictionLabel?.let {
-            runOnUiThread {
-                // val toast = Toast.makeText(this, "Predicted: $it", Toast.LENGTH_SHORT)
-                // toast.show()
-                // toast.cancel()
-                predictionTextView.text = "Prediction: $it"
+        predictionLabel?.let { label ->
+            isPredictionDelayed = true
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                predictionTextView.text = "Prediction: $label"
+                playAudioForPrediction(label)
+                isPredictionDelayed = false
+            }, 2000L) // 2 second delay
+        }
+    }
+
+    private fun playAudioForPrediction(prediction: String) {
+        // Stop current audio if playing
+        mediaPlayer?.release()
+
+        val resourceName = when (prediction) {
+            "أدوية" -> "adwia"
+            "استيقاظ" -> "wakeup"
+            "البلعوم" -> "balwm"
+            "البنكرياس" -> "benkreas"
+            "الجهاز الهضمي" -> "hadmy"
+            "الزائدة الدودية" -> "doda"
+            "الصدر" -> "sadr"
+            "العمود الفقري" -> "amod"
+            "القصبة الهوائية" -> "kasba"
+            "القلب" -> "kalb"
+            "الكبد" -> "kebd"
+            "المناعة" -> "manaa"
+            "الهيكل العظمي" -> "haykl"
+            "الوخز بالإبر" -> "ebar"
+            "تلقيح النباتات" -> "nabatat"
+            "تلقيح" -> "talkeh"
+            "جرح" -> "garh"
+            "جمجمة" -> "gomgma"
+            "جهاز التنفس" -> "tanfas"
+            "دواء" -> "dwa"
+            "زكام" -> "zkam"
+            "سماعة الطبيب" -> "samaa"
+            "صحي" -> "sihy"
+            "صمت" -> "smt"
+            "صيدلية" -> "sidlia"
+            "ضعف بصري" -> "basri"
+            "ضغط الدم" -> "dam"
+            "عضلة" -> "adla"
+            "فحص البصر" -> "basr"
+            "فحص جسدي" -> "gasd"
+            "فيروس" -> "virus"
+            "قطارة" -> "catara"
+            "كبسولة" -> "capsola"
+            "منغولي" -> "mangholy"
+            "ميكروب" -> "microp"
+            "نبض" -> "nabd"
+            "نوم" -> "nwm"
+            "يستنشق" -> "stnshq"
+            "يسمع" -> "ysma"
+            "يشرب" -> "yshrab"
+            "إعاقة جسدية" -> "eaqa"
+            else -> null
+        }
+
+        resourceName?.let {
+            val resId = resources.getIdentifier(it, "raw", packageName)
+            if (resId != 0) {
+                mediaPlayer = MediaPlayer.create(this, resId)
+                mediaPlayer?.start()
             }
         }
     }
