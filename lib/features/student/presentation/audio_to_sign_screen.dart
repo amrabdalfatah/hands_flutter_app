@@ -76,7 +76,7 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
               _currentImage = "assets/videos/you'reWelcome.gif";
               break;
             case 'اكتب':
-              _currentImage = "assets/videos/write.gif";
+              _currentImage = "assets/videos/write.gif"; 
               break;
             case 'امس':
               _currentImage = "assets/videos/yesterday.gif";
@@ -85,7 +85,7 @@ class _AudioToSignScreenState extends State<AudioToSignScreen> {
               _currentImage = "assets/videos/when.gif";
               break;
             case 'شكرا':
-              _currentImage = "assets/videos/tanks.gif";
+              _currentImage = "assets/videos/thanks.gif";
               break;
             case 'بطن':
               _currentImage = "assets/videos/stomache.gif";
