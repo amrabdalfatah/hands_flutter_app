@@ -106,7 +106,7 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
         "ضعف بصري",
         "استيقاظ",
         "أسوأ",
-        "جرح",
+        "جرح"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -235,7 +235,7 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
     // === TFLite model ===
 
     private fun loadModelFile(): MappedByteBuffer {
-        val fileDescriptor = assets.openFd("sign_lang.tflite")
+        val fileDescriptor = assets.openFd("sign_language_model.tflite")
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         val fileChannel = inputStream.channel
         val startOffset = fileDescriptor.startOffset
@@ -301,37 +301,37 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
         mediaPlayer?.release()
 
         val resourceName = when (prediction) {
-            "الزائدة الدودية" -> "alzaeda_aldwdia"
-            "العمود الفقري" -> "alamod_alfakry"
+            "الزائدة الدودية" -> "alzaedaaldwdia"
+            "العمود الفقري" -> "alamodalfakry"
             "سيئ" -> "seea"
             "الصدر" -> "alsadr"
             "أصلح" -> "aslah"
             "طعام" -> "taam"
             "مرحبا" -> "marhba"
             "عذرا" -> "ozra"
-            "جهاز التنفس" -> "gehaz_tanfas"
-            "الهيكل العظمي" -> "alhaykal_alazmy"
+            "جهاز التنفس" -> "gehaztanfas"
+            "الهيكل العظمي" -> "alhaykalalazmy"
             "تحدث" -> "tahdath"
             "شكرا" -> "shokran"
-            "القصبة الهوائية" -> "alkasba_alhoaea"
+            "القصبة الهوائية" -> "alkasbaalhoaea"
             "نعم" -> "naam"
-            "الوخز بالإبر" -> "alwakhz_ebar"
+            "الوخز بالإبر" -> "alwakhzebar"
             "عمر" -> "omr"
             "فاتورة" -> "fatora"
-            "ضغط الدم" -> "daght_dam"
+            "ضغط الدم" -> "daghtdam"
             "برجر" -> "borger"
             "كعكة" -> "kaka"
             "كبسولة" -> "kapsola"
             "دجاج" -> "dagag"
             "زكام" -> "zokam"
             "يبكي" -> "yabki"
-            "الجهاز الهضمي" -> "algehaz_alhadmy"
+            "الجهاز الهضمي" -> "algehazalhadmy"
             "طبيب" -> "tabeb"
             "قطارة" -> "katara"
             "أدوية" -> "adwia"
             "متحمس" -> "motahmas"
             "جيد" -> "gaed"
-            "حظا سعيدا" -> "haza_saed"
+            "حظا سعيدا" -> "hazasaed"
             "سعيد" -> "saied"
             "صحي" -> "sehy"
             "يسمع" -> "yasmaa"
@@ -350,16 +350,16 @@ class CameraActivity : ComponentActivity(), GestureRecognizerHelper.GestureRecog
             "البنكرياس" -> "albenkrias"
             "صيدلية" -> "siedlia"
             "البلعوم" -> "albalaom"
-            "إعاقة جسدية" -> "eaqa_gasdia"
-            "فحص جسدي" -> "fahs_gasd"
-            "تلقيح النباتات" -> "talkeeh_alnabatat"
+            "إعاقة جسدية" -> "eaqagasdia"
+            "فحص جسدي" -> "fahsgasd"
+            "تلقيح النباتات" -> "talkeehalnabatat"
             "نبض" -> "nabd"
-            "فحص البصر" -> "fahs_basr"
+            "فحص البصر" -> "fahsbasr"
             "صمت" -> "samt"
             "جمجمة" -> "gomgma"
-            "سماعة الطبيب" -> "samaa_eltabeb"
+            "سماعة الطبيب" -> "samaaeltabeb"
             "فيروس" -> "virous"
-            "ضعف بصري" -> "daaf_basry"
+            "ضعف بصري" -> "daafbasry"
             "استيقاظ" -> "estekaz"
             "أسوأ" -> "aswaa"
             "جرح" -> "garah"
